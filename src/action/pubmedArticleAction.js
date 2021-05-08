@@ -45,7 +45,7 @@ export const fetchPubmedArticleByIdAction = (id) => async (dispatch) => {
     }
 }
 
-export const postArticlesWithWikiItems = (body) => async (dispatch) => {
+export const postArticlesWithWikiItems = (body, target) => async (dispatch) => {
     const json = JSON.stringify(body);
     try {
         const response = await Request().post("/api/article", json, {
@@ -54,7 +54,7 @@ export const postArticlesWithWikiItems = (body) => async (dispatch) => {
         dispatch({
             type: SHOW_SUCCESS_MODAL,
             payload: response.data,
-            target: "/",
+            target: target,
         });
         history.push("/success")
     } catch (error) {

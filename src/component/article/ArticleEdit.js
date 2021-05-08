@@ -4,8 +4,22 @@ import {connect} from "react-redux";
 import { fetchArticleByIdAction, deleteArticleTagAction } from "../../action/articleAction";
 import {Table} from "react-bootstrap";
 import history from "../../history";
+import WikiItemList from "../wikiItem/WikiItemList";
+import ArticleTagButton from "./ArticleTagButton";
 
 class ArticleEdit extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            wikiItems: null,
+        }
+    }
+
+    componentDidMount() {
+        this.props.fetchArticleByIdAction(this.props.match.params.id);
+    }
+
     handleRemoveClick = (e, entityId) => {
         e.preventDefault();
         const articleId = this.props.match.params.id
@@ -66,15 +80,37 @@ class ArticleEdit extends React.Component {
         )
     }
 
+    onWikiItemSelected = (wikiItems) => {
+        this.setState({wikiItems: wikiItems})
+    }
+
+    getArticleDto = () => {
+        const { entityId, articleAbstract, authors, keywords, title } = this.props.article;
+        return [{
+            entityId: entityId,
+            articleAbstract: articleAbstract,
+            authors: authors,
+            keywords: keywords,
+            title: title
+        }]
+    }
+
     render() {
         if (!this.props.article) {
-            this.props.fetchArticleByIdAction(this.props.match.params.id);
             return <div>Loading...</div>;
         }
 
         return (
             <React.Fragment>
                 {this.renderArticle()}
+                <WikiItemList onWikiItemSelected={this.onWikiItemSelected.bind(this)}/>
+                <ArticleTagButton
+                    articles={this.getArticleDto()}
+                    wikiItems={this.state.wikiItems}
+                    target={`/article/edit/${this.props.match.params.id}`}
+                />
+                <br/>
+                <br/>
             </React.Fragment>
         )
     }

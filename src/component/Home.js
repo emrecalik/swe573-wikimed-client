@@ -4,34 +4,24 @@ import {connect} from "react-redux";
 import ArticleList from "./article/pubmed/PubmedArticleList";
 import WikiItemList from "./wikiItem/WikiItemList";
 import { postArticlesWithWikiItems } from "../action/pubmedArticleAction";
-import {getCookie} from "../action/cookie/cookieActions";
+import ArticleTagButton from "./article/ArticleTagButton";
 
 class Home extends React.Component {
-    wikiItems = null;
-    articles = null
 
-    tagButton = () => {
-        return (
-            <button type={"button"} className={"btn btn-danger col-md-12"} onClick={this.tagButtonClick}>
-                Tag Article
-            </button>
-        )
-    }
-
-    tagButtonClick = () => {
-        this.props.postArticlesWithWikiItems({
-            userId: getCookie("userId"),
-            articles: this.articles,
-            wikiItems: this.wikiItems
-        })
+    constructor(props) {
+        super(props);
+        this.state = {
+            wikiItems: null,
+            articles: null
+        }
     }
 
     onWikiItemSelected = (wikiItems) => {
-        this.wikiItems = wikiItems
+        this.setState({wikiItems: wikiItems})
     }
 
     onArticleSelected = (articles) => {
-        this.articles = articles;
+        this.setState({articles: articles})
     }
 
     render() {
@@ -39,7 +29,11 @@ class Home extends React.Component {
             <div>
                 <ArticleList onArticleSelected={this.onArticleSelected.bind(this)}/>
                 <WikiItemList onWikiItemSelected={this.onWikiItemSelected.bind(this)}/>
-                {this.tagButton()}
+                <ArticleTagButton
+                    articles={this.state.articles}
+                    wikiItems={this.state.wikiItems}
+                    target={"/"}
+                />
                 <br/>
                 <br/>
             </div>
