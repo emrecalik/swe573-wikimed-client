@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import _ from "lodash";
 import {Pagination} from "react-bootstrap";
 
-import ArticleSearch from "./PubmedArticleSearch";
+import PubmedArticleSearch from "./PubmedArticleSearch";
 import {clearPubmedArticlesAction, fetchPubmedArticlesAction} from "../../../action/pubmedArticleAction";
 import history from "../../../history";
 
@@ -18,11 +18,6 @@ class PubmedArticleList extends React.Component {
             checkBoxState: {}
         }
         this.handlePageNumClick = this.handlePageNumClick.bind(this)
-        this.handleQuery = this.handleQuery.bind(this)
-    }
-
-    handleQuery = (queryVal) => {
-        queryVal === "" ? this.props.clearPubmedArticlesAction() : this.props.fetchPubmedArticlesAction(queryVal);
     }
 
     getArticlesForCurrentPage = () => {
@@ -51,7 +46,7 @@ class PubmedArticleList extends React.Component {
         return this.getArticlesForCurrentPage().map((article) => {
             let { entityId } = article;
             return (
-                <li className={"list-group-item list-group-item-action"} key={entityId} style={{cursor:"pointer"}}>
+                <li className={"list-group-item my-list-item"} key={entityId} style={{cursor:"pointer"}}>
                     <div className={"form-check"}>
                         <input
                             className={"form-check-input"}
@@ -99,9 +94,9 @@ class PubmedArticleList extends React.Component {
 
     render() {
         return(
-            <div className={"bg-light"}>
-                <ArticleSearch handleOnQuery={this.handleQuery}/>
+            <div className={"search-list"}>
                 <ul className={"list-group"}>
+                    <PubmedArticleSearch/>
                     {this.renderArticleTitles()}
                     {this.renderPageNumbers()}
                 </ul>

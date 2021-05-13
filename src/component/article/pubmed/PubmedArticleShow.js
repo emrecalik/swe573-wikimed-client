@@ -98,7 +98,11 @@ class PubmedArticleShow extends React.Component {
     render() {
         if (!this.props.article) {
             this.props.fetchPubmedArticleByIdAction(this.props.match.params.entityId);
-            return <div>Loading...</div>;
+            return (
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            )
         }
 
         return (

@@ -1,13 +1,17 @@
 import React from "react";
 import {getCookie} from "../../action/cookie/cookieActions";
 import { connect } from "react-redux";
-import { postArticlesWithWikiItems } from "../../action/pubmedArticleAction";
+import { postArticlesWithWikiItemsAction } from "../../action/pubmedArticleAction";
 
 class ArticleTagButton extends React.Component {
 
     tagButton = () => {
         return (
-            <button type={"button"} className={"btn btn-danger col-md-12"} onClick={this.tagButtonClick}>
+            <button
+                type={"button"}
+                className={"btn btn-primary col-md-6"}
+                onClick={this.tagButtonClick}
+            >
                 Tag Article
             </button>
         )
@@ -24,9 +28,11 @@ class ArticleTagButton extends React.Component {
 
     render() {
         return (
-            <div>{this.tagButton()}</div>
+            <div className={"d-flex justify-content-center"}>
+                {this.tagButton()}
+            </div>
         )
     }
 }
 
-export default connect(null, { postArticlesWithWikiItems })(ArticleTagButton);
+export default connect(null, { postArticlesWithWikiItems: postArticlesWithWikiItemsAction })(ArticleTagButton);

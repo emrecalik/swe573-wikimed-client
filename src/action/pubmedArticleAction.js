@@ -45,7 +45,7 @@ export const fetchPubmedArticleByIdAction = (id) => async (dispatch) => {
     }
 }
 
-export const postArticlesWithWikiItems = (body, target) => async (dispatch) => {
+export const postArticlesWithWikiItemsAction = (body, target) => async (dispatch) => {
     const json = JSON.stringify(body);
     try {
         const response = await Request().post("/api/article", json, {
@@ -60,7 +60,7 @@ export const postArticlesWithWikiItems = (body, target) => async (dispatch) => {
     } catch (error) {
         if (error.response.data.message === "Expired JWT Token") {
             Promise.resolve(dispatch(refreshTokenAction()))
-                .then(() => dispatch(postArticlesWithWikiItems(body)));
+                .then(() => dispatch(postArticlesWithWikiItemsAction(body)));
         } else {
             dispatch(setError(error, "/"));
             history.push("/error");

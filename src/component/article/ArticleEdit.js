@@ -6,6 +6,7 @@ import {Table} from "react-bootstrap";
 import history from "../../history";
 import WikiItemList from "../wikiItem/WikiItemList";
 import ArticleTagButton from "./ArticleTagButton";
+import { clearWikiItemsAction } from "../../action/wikiAction";
 
 class ArticleEdit extends React.Component {
 
@@ -17,6 +18,7 @@ class ArticleEdit extends React.Component {
     }
 
     componentDidMount() {
+        this.props.clearWikiItemsAction();
         this.props.fetchArticleByIdAction(this.props.match.params.id);
     }
 
@@ -29,7 +31,7 @@ class ArticleEdit extends React.Component {
     loadTags = (tags) => {
         return Object.values(tags).map((tag) => {
             return (
-                <div key={tag.entityId}>
+                <div key={tag.entityId} className={"d-flex"} style={{marginBottom: "10px"}}>
                     <a
                         href={"/"}
                         className={"badge badge-pill badge-danger"}
@@ -39,7 +41,7 @@ class ArticleEdit extends React.Component {
                     Remove
                     </a>
                     <a
-                        href={tag.entityId}
+                        href={tag.conceptUri}
                         target={"_blank"}
                         className={"badge badge-pill badge-primary"}
                         style={{"marginLeft":"10px"}}
@@ -122,4 +124,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, { fetchArticleByIdAction, deleteArticleTagAction })(ArticleEdit)
+export default connect(mapStateToProps, { fetchArticleByIdAction, deleteArticleTagAction, clearWikiItemsAction })(ArticleEdit)

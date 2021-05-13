@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 import ArticleList from "./article/pubmed/PubmedArticleList";
 import WikiItemList from "./wikiItem/WikiItemList";
-import { postArticlesWithWikiItems } from "../action/pubmedArticleAction";
+import { postArticlesWithWikiItemsAction } from "../action/pubmedArticleAction";
 import ArticleTagButton from "./article/ArticleTagButton";
 
 class Home extends React.Component {
@@ -26,19 +26,19 @@ class Home extends React.Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <ArticleList onArticleSelected={this.onArticleSelected.bind(this)}/>
+                <hr/>
                 <WikiItemList onWikiItemSelected={this.onWikiItemSelected.bind(this)}/>
+                <hr/>
                 <ArticleTagButton
                     articles={this.state.articles}
                     wikiItems={this.state.wikiItems}
                     target={"/"}
                 />
-                <br/>
-                <br/>
-            </div>
+            </React.Fragment>
         )
     }
 }
 
-export default connect(null, { postArticlesWithWikiItems })(Home);
+export default connect(null, { postArticlesWithWikiItems: postArticlesWithWikiItemsAction })(Home);

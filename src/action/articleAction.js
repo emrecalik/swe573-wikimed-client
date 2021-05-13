@@ -85,8 +85,7 @@ export const fetchArticleByIdAction = (articleId) => async (dispatch) => {
     }
 }
 
-export const fetchPaginatedArticles = (pageNum, postMethod) => async (dispatch) => {
-    const userId = getCookie("userId");
+export const fetchPaginatedArticlesAction = (userId, pageNum, postMethod) => async (dispatch) => {
     try {
         const response = await Request().get(`/api/article/all`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
@@ -95,6 +94,7 @@ export const fetchPaginatedArticles = (pageNum, postMethod) => async (dispatch) 
                 userId: userId
             }
         });
+        console.log(response);
         dispatch({
             type: FETCH_PAGINATED_ARTICLES,
             payload: response.data
@@ -103,7 +103,7 @@ export const fetchPaginatedArticles = (pageNum, postMethod) => async (dispatch) 
     } catch (error) {
         if (error.response.data.message === "Expired JWT Token") {
             Promise.resolve(dispatch(refreshTokenAction()))
-                .then(() => dispatch(fetchPaginatedArticles(pageNum, postMethod)));
+                .then(() => dispatch(fetchPaginatedArticlesAction(pageNum, postMethod)));
         } else {
             setError(error)
             history.push("/error");

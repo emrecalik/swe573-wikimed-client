@@ -12,30 +12,33 @@ class SignInForm extends React.Component {
         const { handleSubmit, errors } = this.props;
 
         return (
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <div className={"row col-6"}>
-                        <div className={"form-group row col-8"}>
-                            <label htmlFor={"userName"}>Username</label>
-                            <Field id={"userName"} name={"userName"} className={"form-control"} />
-                            <p style={{color:"red"}}>{errors.userName}</p>
+            <div className={"jumbotron d-flex align-items-center"} style={{backgroundColor: "#ecf5fc"}}>
+                <div className={"container"}>
+                    <form onSubmit={handleSubmit}>
+                        <div className={"row justify-content-center"}>
+                            <div className={"form-group row col-4"}>
+                                <label htmlFor={"userName"}>Username</label>
+                                <Field id={"userName"} name={"userName"} className={"form-control"} />
+                                <p style={{color:"red"}}>{errors.userName}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={"row col-6"}>
-                        <div className={"form-group row col-8"}>
-                            <label htmlFor={"password"}>Password</label>
-                            <Field id={"password"} name={"password"} className={"form-control"} />
-                            <p style={{color:"red"}}>{errors.password}</p>
+                        <div className={"row justify-content-center"}>
+                            <div className={"form-group row col-4"}>
+                                <label htmlFor={"password"}>Password</label>
+                                <Field id={"password"} name={"password"} className={"form-control"} />
+                                <p style={{color:"red"}}>{errors.password}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={"row align-items-center col-6"}>
-                        <div className={"row col-8 justify-content-between"}>
-                            <button type={"submit"} className={"btn btn-primary"}>Submit</button>
-                            <Link to={"/user/forgot-password"}>Forgot Password?</Link>
+                        <div className={"row justify-content-center"}>
+                            <div className={"row col-4 justify-content-between"}>
+                                <button type={"submit"} className={"btn btn-primary"}>Submit</button>
+                                <Link to={"/user/forgot-password"}>Forgot Password?</Link>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
+
         )
     }
 

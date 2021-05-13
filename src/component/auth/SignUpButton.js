@@ -6,7 +6,7 @@ class SignUpButton extends React.Component {
         return (
             <Link
                 to={"/user/signup"}
-                className={"btn btn-secondary my-2 my-sm-0"}
+                className={"btn btn-info my-2 my-sm-0"}
                 style={{ "marginLeft":"10px"}}
             >
                 Sign Up

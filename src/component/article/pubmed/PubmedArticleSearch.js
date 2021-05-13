@@ -11,22 +11,24 @@ class PubmedArticleSearch extends React.Component {
         const { handleSubmit, errors } = this.props;
 
         return (
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <br/>
-                    <div className={"form-row justify-content-center"}>
-                        <div className={"form-group col-md-6"}>
-                            <Field id={"query"} name={"query"} className={"form-control form-rounded"} />
-                            <p style={{color:"red"}}>{errors.query}</p>
-                        </div>
-                    </div>
-                    <div className={"form-row justify-content-center"}>
-                        <div className={"form-group col-md-6"}>
-                            <button type={"submit"} className={"btn btn-primary btn-lg btn-block"}>Search PubMed</button>
-                        </div>
-                    </div>
+            <React.Fragment>
+                <form className={"form-inline my-2 my-lg-0 form-row justify-content-center"} onSubmit={handleSubmit}>
+                    <Field
+                        id={"query"}
+                        name={"query"}
+                        className={"form-control mr-sm-2 col-md-6"}
+                        placeholder={"Search on PubMed"}
+                        aria-label={"Search"}
+                    />
+                    <button
+                            className={"btn btn-outline-primary my-2 my-sm-0"}
+                        type={"submit"}
+                    >
+                        Search Article
+                    </button>
                 </form>
-            </div>
+                <p style={{color:"red"}} className={"row col-md-9 justify-content-center"}>{errors.query}</p>
+            </React.Fragment>
         )
     }
 

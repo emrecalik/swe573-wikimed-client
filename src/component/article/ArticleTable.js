@@ -1,14 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import _ from "lodash";
-import { Link } from "react-router-dom";
-
-import { fetchArticlesByUserIdAction } from "../../action/articleAction";
-import {Pagination, Table} from "react-bootstrap";
 import history from "../../history";
-import {getCookie} from "../../action/cookie/cookieActions";
+import {Link} from "react-router-dom";
+import ArticleRate from "./ArticleRate";
+import {Pagination, Table} from "react-bootstrap";
+import _ from "lodash";
+import {fetchPaginatedArticlesAction} from "../../action/articleAction";
 
-class ArticleMyList extends React.Component {
+class ArticleTable extends React.Component {
 
     DEFAULT_PAGE_NUM = 1;
 
@@ -29,29 +28,7 @@ class ArticleMyList extends React.Component {
     }
 
     callFetchAction = (pageNum) => {
-        const userId = getCookie("userId");
-        this.props.fetchArticlesByUserIdAction(userId, pageNum,
-            () => history.push({
-                pathname: "/article/mylist",
-                search: `page=${pageNum}`
-            }));
-    }
-
-    renderDeleteEditButtons = (id) => {
-        return (
-            <div className={"btn-group"}>
-                <Link to={`/article/edit/${id}`}>
-                    <button className={"btn btn-primary my-2 my-sm-0"} style={{"marginLeft":"10px"}}>
-                        Edit
-                    </button>
-                </Link>
-                <Link to={`/article/delete/${id}`}>
-                    <button className={"btn btn-secondary my-2 my-sm-0"} style={{"marginLeft":"10px"}}>
-                        Delete
-                    </button>
-                </Link>
-            </div>
-        );
+        this.props.getPageNum(pageNum);
     }
 
     loadTags = (tags) => {
@@ -73,23 +50,51 @@ class ArticleMyList extends React.Component {
 
     loadArticleDetails = () => {
         return Object.values(this.props.articles.articles).map((article) => {
-            const { id, title, tags } = article
+            const { id, title, tags, user, rate } = article
             return (
                 <tr key={id}>
                     <td onClick={() => history.push(`/article/show/${id}`)} style={{cursor:"pointer"}}>{id}</td>
                     <td onClick={() => history.push(`/article/show/${id}`)} style={{cursor:"pointer"}}>{title}</td>
                     <td>{this.loadTags(tags)}</td>
-                    <td style={{"whiteSpace": "nowrap"}}>{this.renderDeleteEditButtons(id)}</td>
+                    <td>
+                        <Link to={`/user/show/${user.userId}`}>
+                            {user.firstName} {user.lastName}
+                        </Link>
+                    </td>
+                    <td>
+                        <ArticleRate
+                            articleId={id}
+                            userRate={rate}
+                        />
+                    </td>
                 </tr>
             )
         })
+    }
+
+    renderArticleList = () => {
+        return (
+            <Table striped bordered hover className>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Tags</th>
+                    <th>User</th>
+                    <th>Rate</th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.loadArticleDetails()}
+                </tbody>
+            </Table>
+        )
     }
 
     renderPageNumbers = () => {
         const PAGE_SIZE = 5
         let pageCount = Math.ceil(this.props.articles.totalArticleCount / PAGE_SIZE)
         let pageNumItems = [];
-
         let urlQueryPageNum = new URLSearchParams(this.props.location.search).get("page");
         let activeNum = urlQueryPageNum !== null ? urlQueryPageNum : 1
         for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
@@ -97,7 +102,7 @@ class ArticleMyList extends React.Component {
             pageNumItems.push(
                 <li className={`page-item ${activeCss}`} key={pageNum}>
                     <a
-                        href={`/articles?page=${pageNum}`}
+                        href={`/article/all/page=${pageNum}`}
                         className={"page-link"}
                         onClick={(e) => this.handlePageNumClick(e, pageNum)}
                     >
@@ -109,25 +114,8 @@ class ArticleMyList extends React.Component {
         return <Pagination>{pageNumItems}</Pagination>;
     }
 
-    renderArticleList = () => {
-        return (
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Tags</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.loadArticleDetails()}
-                </tbody>
-            </Table>
-        )
-    }
-
     render() {
+        console.log("Article Table");
         if (_.isEmpty(this.props.articles.articles) ||
             !Object.keys(this.props.articles.articles).length) {
             return <h5>No Article</h5>
@@ -138,14 +126,14 @@ class ArticleMyList extends React.Component {
                 {this.renderArticleList()}
                 {this.renderPageNumbers()}
             </React.Fragment>
-        )
+        );
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        articles: state.articles,
+        articles: state.articles
     }
 }
 
-export default connect(mapStateToProps, { fetchArticlesByUserIdAction })(ArticleMyList);
+export default connect(mapStateToProps, { fetchPaginatedArticlesAction })(ArticleTable);

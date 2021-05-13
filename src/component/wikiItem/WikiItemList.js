@@ -43,7 +43,7 @@ class WikiItemList extends React.Component {
         return this.getWikiItemsForCurrentPage().map((wikiItem) => {
             const wikiItemId = wikiItem.entityId;
             return (
-                <li className={"list-group-item list-group-item-action"} key={wikiItemId} style={{cursor:"pointer"}}>
+                <li className={"list-group-item my-list-item"} key={wikiItemId} style={{cursor:"pointer"}}>
                     <div className={"form-check"}>
                         <input
                             className={"form-check-input"}
@@ -94,9 +94,9 @@ class WikiItemList extends React.Component {
 
     render() {
         return (
-            <div className={"bg-light"}>
-                <WikiItemSearch handleOnQuery={this.handleQuery}/>
+            <div className={"search-list wiki-list"}>
                 <ul className={"list-group"}>
+                    <WikiItemSearch handleOnQuery={this.handleQuery}/>
                     {this.renderWikiItems()}
                     {this.renderPageNumbers()}
                 </ul>
