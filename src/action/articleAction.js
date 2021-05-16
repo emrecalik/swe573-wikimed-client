@@ -94,7 +94,6 @@ export const fetchPaginatedArticlesAction = (userId, pageNum, postMethod) => asy
                 userId: userId
             }
         });
-        console.log(response);
         dispatch({
             type: FETCH_PAGINATED_ARTICLES,
             payload: response.data

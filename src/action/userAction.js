@@ -1,5 +1,5 @@
 import {Request} from "../api/request";
-import {FETCH_USER_DETAILS_BY_ID, FOLLOW_USER, UNFOLLOW_USER} from "./types";
+import {FETCH_ACTIVITY_STREAM, FETCH_USER_DETAILS_BY_ID, FOLLOW_USER, UNFOLLOW_USER} from "./types";
 import {setError} from "./errorAction";
 import {refreshTokenAction} from "./authAction";
 import history from "../history";
@@ -66,6 +66,27 @@ export const unFollowUserAction = (followeeId) => async (dispatch) => {
         if (error.response.data.message === "Expired JWT Token") {
             Promise.resolve(dispatch(refreshTokenAction()))
                 .then(() => dispatch(followUserAction(userId, followeeId)));
+        } else {
+            dispatch(setError(error, "/"));
+            history.push("/error");
+        }
+    }
+}
+
+export const fetchActivityStreamAction = () => async (dispatch) => {
+    const userId = getCookie("userId");
+    try {
+        const response = await Request().get(`/api/activity/${userId}`, {
+            headers: { Authorization: `Bearer ${getCookie("accessToken")}`}
+        });
+        dispatch({
+            type: FETCH_ACTIVITY_STREAM,
+            payload: response.data
+        });
+    } catch (error) {
+        if (error.response.data.message === "Expired JWT Token") {
+            Promise.resolve(dispatch(refreshTokenAction()))
+                .then(() => dispatch(fetchActivityStreamAction()));
         } else {
             dispatch(setError(error, "/"));
             history.push("/error");

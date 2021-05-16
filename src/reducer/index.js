@@ -6,6 +6,7 @@ import {wikiReducer} from "./wikiReducer";
 import {successReducer} from "./successReducer";
 import {articleReducer} from "./articleReducer";
 import {userReducer} from "./userReducer";
+import {activityReducer} from "./activityReducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
     pubmedArticles: pubmedArticleReducer,
     wikiItems: wikiReducer,
     articles: articleReducer,
-    user: userReducer
+    user: userReducer,
+    activities: activityReducer
 });

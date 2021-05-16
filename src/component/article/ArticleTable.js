@@ -115,7 +115,6 @@ class ArticleTable extends React.Component {
     }
 
     render() {
-        console.log("Article Table");
         if (_.isEmpty(this.props.articles.articles) ||
             !Object.keys(this.props.articles.articles).length) {
             return <h5>No Article</h5>
