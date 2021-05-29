@@ -6,6 +6,7 @@ import { fetchArticlesByUserIdAction } from "../../action/articleAction";
 import {getCookie} from "../../action/cookie/cookieActions";
 import ArticleTable from "../article/ArticleTable";
 import history from "../../history";
+import Spinner from "../common/Spinner";
 
 class UserShow extends React.Component {
 
@@ -53,9 +54,10 @@ class UserShow extends React.Component {
                 search: `page=${pageNum}`
             }));
     }
+
     render() {
-        if (!this.props.user) {
-            return <h5>Loading...</h5>
+        if (this.props.user.id.toString() !== this.props.match.params.id) {
+            return <Spinner/>
         }
 
         const { firstName, lastName, userName, email } = this.props.user;

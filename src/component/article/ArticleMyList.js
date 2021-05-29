@@ -76,8 +76,16 @@ class ArticleMyList extends React.Component {
             const { id, title, tags } = article
             return (
                 <tr key={id}>
-                    <td onClick={() => history.push(`/article/show/${id}`)} style={{cursor:"pointer"}}>{id}</td>
-                    <td onClick={() => history.push(`/article/show/${id}`)} style={{cursor:"pointer"}}>{title}</td>
+                    <td style={{cursor:"pointer"}}>
+                        <Link to={`/article/show/${id}`}>
+                            {id}
+                        </Link>
+                    </td>
+                    <td style={{cursor:"pointer"}}>
+                        <Link to={`/article/show/${id}`}>
+                            {title}
+                        </Link>
+                    </td>
                     <td>{this.loadTags(tags)}</td>
                     <td style={{"whiteSpace": "nowrap"}}>{this.renderDeleteEditButtons(id)}</td>
                 </tr>

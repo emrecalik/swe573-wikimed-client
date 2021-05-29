@@ -6,7 +6,6 @@ import history from "../history";
 import Header from "./common/Header";
 import SignInForm from "./auth/SignInForm";
 import SignUpForm from "./auth/SignUpForm";
-import PubmedArticleShow from "./article/pubmed/PubmedArticleShow";
 import Home from "./Home";
 import WikiItemShow from "./wikiItem/WikiItemShow";
 import ArticleMyList from "./article/ArticleMyList";
@@ -22,6 +21,7 @@ import UserDetails from "./user/UserShow";
 import ArticleEdit from "./article/ArticleEdit";
 import UserFeeds from "./user/UserFeeds";
 import Footer from "./common/Footer";
+import PureArticleShow from "./article/pureArticle/PureArticleShow";
 
 class App extends React.Component {
 
@@ -42,7 +42,7 @@ class App extends React.Component {
                             <Route path={"/user/signin"} exact component={SignInForm}/>
                             <Route path={"/user/signup"} exact component={SignUpForm}/>
 
-                            <Route path={"/article/pubmed/show/:entityId"} exact component={PubmedArticleShow}/>
+                            <Route path={"/pureArticle/show/:id"} exact component={PureArticleShow}/>
                             <Route path={"/wikiItem/show/:entityId"} exact component={WikiItemShow}/>
 
                             <PrivateRoute
@@ -51,6 +51,13 @@ class App extends React.Component {
                                 auth={auth}
                                 permissionList={["ADMIN", "USER"]}
                                 component={ArticleMyList}
+                            />
+                            <PrivateRoute
+                                path={"/article/show/:id"}
+                                exact
+                                auth={auth}
+                                permissionList={["ADMIN", "USER"]}
+                                component={ArticleShow}
                             />
                             <PrivateRoute
                                 path={"/article/delete/:id"}
@@ -65,13 +72,6 @@ class App extends React.Component {
                                 auth={auth}
                                 permissionList={["ADMIN", "USER"]}
                                 component={ArticleEdit}
-                            />
-                            <PrivateRoute
-                                path={"/article/show/:id"}
-                                exact
-                                auth={auth}
-                                permissionList={["ADMIN", "USER"]}
-                                component={ArticleShow}
                             />
                             <PrivateRoute
                                 path={"/user/myprofile"}

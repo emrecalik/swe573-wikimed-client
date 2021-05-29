@@ -3,13 +3,13 @@ import { Field, withFormik } from "formik";
 import { connect } from "react-redux";
 import * as Yup from "yup"
 
-import {fetchPubmedArticlesAction,clearPubmedArticlesAction} from "../../../action/pubmedArticleAction";
+import {fetchPureArticlesByQuery,clearPureArticles} from "../../../action/pureArticleAction";
+import {setCookie} from "../../../action/cookie/cookieActions";
 
-class PubmedArticleSearch extends React.Component {
+class PureArticleSearch extends React.Component {
 
     renderForm = () => {
         const { handleSubmit, errors } = this.props;
-
         return (
             <React.Fragment>
                 <form className={"form-inline my-2 my-lg-0 form-row justify-content-center"} onSubmit={handleSubmit}>
@@ -21,7 +21,7 @@ class PubmedArticleSearch extends React.Component {
                         aria-label={"Search"}
                     />
                     <button
-                            className={"btn btn-outline-primary my-2 my-sm-0"}
+                        className={"btn btn-outline-primary my-2 my-sm-0"}
                         type={"submit"}
                     >
                         Search Article
@@ -50,10 +50,11 @@ const formikEnhancer = withFormik({
         query: "",
     }),
     handleSubmit: (payload, { props }) => {
-        props.clearPubmedArticlesAction();
-        props.fetchPubmedArticlesAction(payload.query);
+        setCookie("query", payload.query)
+        props.clearPureArticles();
+        props.fetchPureArticlesByQuery(payload.query, props.pageNum);
     },
-    displayName: "ArticleSearch",
-})(PubmedArticleSearch);
+    displayName: "PureArticleSearch",
+})(PureArticleSearch);
 
-export default connect(null, { fetchPubmedArticlesAction,clearPubmedArticlesAction })(formikEnhancer);
+export default connect(null, { fetchPureArticlesByQuery,clearPureArticles })(formikEnhancer);

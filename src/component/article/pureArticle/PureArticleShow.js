@@ -1,12 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Table } from "react-bootstrap";
-import { fetchPubmedArticleByIdAction } from "../../../action/pubmedArticleAction";
+import {Table} from "react-bootstrap";
+import {connect} from "react-redux";
 
-class PubmedArticleShow extends React.Component {
+import {fetchPureArticleById} from "../../../action/pureArticleAction";
 
-    loadArticleKeywords = () => {
-        const { keywords } = this.props.article;
+class PureArticleShow extends React.Component {
+
+    loadPureArticleKeywords = () => {
+        const { keywords } = this.props.pureArticle;
 
         return keywords === null
             ?
@@ -21,8 +22,8 @@ class PubmedArticleShow extends React.Component {
             })
     }
 
-    loadArticleAuthors = () => {
-        const { authors } = this.props.article;
+    loadPureArticleAuthors = () => {
+        const { authors } = this.props.pureArticle;
 
         return authors === null
             ?
@@ -37,8 +38,8 @@ class PubmedArticleShow extends React.Component {
             })
     }
 
-    loadArticleIdTitleAbstract = () => {
-        const { entityId, title, articleAbstract } = this.props.article;
+    loadPureArticleIdTitleAbstract = () => {
+        const { entityId, title, articleAbstract } = this.props.pureArticle;
         return (
             <tr>
                 <td>{entityId}</td>
@@ -48,19 +49,19 @@ class PubmedArticleShow extends React.Component {
         )
     }
 
-    renderArticle = () => {
+    renderPureArticle = () => {
         return (
             <div>
                 <Table striped bordered hover>
                     <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>Abstract</th>
-                        </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Abstract</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {this.loadArticleIdTitleAbstract()}
+                    {this.loadPureArticleIdTitleAbstract()}
                     </tbody>
                 </Table>
                 <div className={"container"}>
@@ -68,24 +69,24 @@ class PubmedArticleShow extends React.Component {
                         <div className={"col-sm"}>
                             <Table striped bordered hover>
                                 <thead>
-                                    <tr>
-                                        <th>Authors</th>
-                                    </tr>
+                                <tr>
+                                    <th>Authors</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {this.loadArticleAuthors()}
+                                {this.loadPureArticleAuthors()}
                                 </tbody>
                             </Table>
                         </div>
                         <div className={"col-sm"}>
                             <Table striped bordered hover>
                                 <thead>
-                                    <tr>
-                                        <th>Keywords</th>
-                                    </tr>
+                                <tr>
+                                    <th>Keywords</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {this.loadArticleKeywords()}
+                                {this.loadPureArticleKeywords()}
                                 </tbody>
                             </Table>
                         </div>
@@ -96,8 +97,8 @@ class PubmedArticleShow extends React.Component {
     }
 
     render() {
-        if (!this.props.article) {
-            this.props.fetchPubmedArticleByIdAction(this.props.match.params.entityId);
+        if (!this.props.pureArticle) {
+            this.props.fetchPureArticleById(this.props.match.params.id);
             return (
                 <div className="spinner-border" role="status">
                     <span className="sr-only">Loading...</span>
@@ -107,7 +108,7 @@ class PubmedArticleShow extends React.Component {
 
         return (
             <React.Fragment>
-                {this.renderArticle()}
+                {this.renderPureArticle()}
             </React.Fragment>
         )
     }
@@ -115,8 +116,8 @@ class PubmedArticleShow extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        article: state.pubmedArticles[ownProps.match.params.entityId]
+        pureArticle: state.pureArticles[ownProps.match.params.id]
     }
 }
 
-export default connect(mapStateToProps, { fetchPubmedArticleByIdAction })(PubmedArticleShow);
+export default connect(mapStateToProps, { fetchPureArticleById })(PureArticleShow);

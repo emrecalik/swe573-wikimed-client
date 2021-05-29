@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import history from "../../history";
 import {Link} from "react-router-dom";
 import ArticleRate from "./ArticleRate";
 import {Pagination, Table} from "react-bootstrap";
@@ -53,8 +52,15 @@ class ArticleTable extends React.Component {
             const { id, title, tags, user, rate } = article
             return (
                 <tr key={id}>
-                    <td onClick={() => history.push(`/article/show/${id}`)} style={{cursor:"pointer"}}>{id}</td>
-                    <td onClick={() => history.push(`/article/show/${id}`)} style={{cursor:"pointer"}}>{title}</td>
+                    <td style={{cursor:"pointer"}}>
+                        <Link to={`/article/show/${id}`}>
+                            {id}
+                        </Link>                    </td>
+                    <td style={{cursor:"pointer"}}>
+                        <Link to={`/article/show/${id}`}>
+                            {title}
+                        </Link>
+                    </td>
                     <td>{this.loadTags(tags)}</td>
                     <td>
                         <Link to={`/user/show/${user.userId}`}>

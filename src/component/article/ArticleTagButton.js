@@ -1,7 +1,7 @@
 import React from "react";
 import {getCookie} from "../../action/cookie/cookieActions";
 import { connect } from "react-redux";
-import { postArticlesWithWikiItemsAction } from "../../action/pubmedArticleAction";
+import { tagPureArticlesWithWikiItems } from "../../action/pureArticleAction";
 
 class ArticleTagButton extends React.Component {
 
@@ -18,10 +18,10 @@ class ArticleTagButton extends React.Component {
     }
 
     tagButtonClick = () => {
-        const { articles, wikiItems, target } = this.props;
-        this.props.postArticlesWithWikiItems({
+        const { pureArticles, wikiItems, target } = this.props;
+        this.props.tagPureArticlesWithWikiItems({
             userId: getCookie("userId"),
-            articles: articles,
+            pureArticles: pureArticles,
             wikiItems: wikiItems
         }, target)
     }
@@ -35,4 +35,4 @@ class ArticleTagButton extends React.Component {
     }
 }
 
-export default connect(null, { postArticlesWithWikiItems: postArticlesWithWikiItemsAction })(ArticleTagButton);
+export default connect(null, { tagPureArticlesWithWikiItems })(ArticleTagButton);

@@ -2,12 +2,12 @@ import React from "react";
 import {connect} from "react-redux";
 import _ from "lodash";
 import {Pagination} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import {clearPureArticles, fetchPureArticlesByQuery} from "../../../action/pureArticleAction";
+import {getCookie} from "../../../action/cookie/cookieActions";
+import PureArticleSearch from "./PureArticleSearch";
 
-import PubmedArticleSearch from "./PubmedArticleSearch";
-import {clearPubmedArticlesAction, fetchPubmedArticlesAction} from "../../../action/pubmedArticleAction";
-import history from "../../../history";
-
-class PubmedArticleList extends React.Component {
+class PureArticleList extends React.Component {
     checkedItems = []
     articlesPerPage = 5
 
@@ -20,44 +20,38 @@ class PubmedArticleList extends React.Component {
         this.handlePageNumClick = this.handlePageNumClick.bind(this)
     }
 
-    getArticlesForCurrentPage = () => {
-        const indexOfLastArticle = this.state.currentPageNum * this.articlesPerPage
-        const indexOfFirstArticle = indexOfLastArticle - this.articlesPerPage
-        return Object.values(this.props.articles).slice(indexOfFirstArticle, indexOfLastArticle)
-    }
-
     onCheckBoxChange = (article) => {
         const { checkBoxState } = this.state
-        let { entityId } = article;
-        checkBoxState[entityId] = !checkBoxState[entityId]
-        if (checkBoxState[entityId]) {
+        let { id } = article;
+        checkBoxState[id] = !checkBoxState[id]
+        if (checkBoxState[id]) {
             this.checkedItems.push(article);
         } else {
-            this.checkedItems = this.checkedItems.filter((item) => item.entityId !== entityId)
+            this.checkedItems = this.checkedItems.filter((item) => item.id !== id)
         }
         this.props.onArticleSelected(this.checkedItems);
     }
 
     renderArticleTitles = () => {
-        if (_.isEmpty(this.props.articles) || !this.props.articles) {
+        if (_.isEmpty(this.props.pureArticles.pureArticles) || !this.props.pureArticles.pureArticles) {
             return null;
         }
+        return Object.values(this.props.pureArticles.pureArticles).map((article) => {
+            let { id } = article;
 
-        return this.getArticlesForCurrentPage().map((article) => {
-            let { entityId } = article;
             return (
-                <li className={"list-group-item my-list-item"} key={entityId} style={{cursor:"pointer"}}>
+                <li className={"list-group-item my-list-item"} key={id} style={{cursor:"pointer"}}>
                     <div className={"form-check"}>
                         <input
                             className={"form-check-input"}
                             type={"checkbox"}
-                            id={entityId}
-                            checked={this.state.checkBoxState[entityId]}
+                            id={id}
+                            checked={this.state.checkBoxState[id]}
                             onChange={() => this.onCheckBoxChange(article)}
                         />
-                       <div onClick={() => history.push(`/article/pubmed/show/${entityId}`)}>
+                       <Link to={`/pureArticle/show/${id}`}>
                            {article.title}
-                       </div>
+                       </Link>
                     </div>
                 </li>
             );
@@ -66,17 +60,24 @@ class PubmedArticleList extends React.Component {
 
     handlePageNumClick = (e, pageNum) => {
         e.preventDefault();
-        this.setState({ currentPageNum: pageNum})
+        this.setState({ currentPageNum: pageNum })
+        this.props.fetchPureArticlesByQuery(getCookie("query"), pageNum);
     }
 
     renderPageNumbers = () => {
-        let articles = Object.values(this.props.articles);
+        const PAGE_SIZE = 5;
+        let pageCount = Math.ceil(this.props.pureArticles.totalPureArticleCount / PAGE_SIZE)
+
+        if (pageCount > 10) {
+            pageCount = 10;
+        }
+
         let pageNumItems = []
 
         let { currentPageNum } = this.state
         let activeNum = currentPageNum !== null ? currentPageNum : 1
 
-        for (let pageNum = 1; pageNum <= Math.ceil(articles.length / this.articlesPerPage); pageNum++) {
+        for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
             let activeCss = parseInt(activeNum) === pageNum ? "active" : ""
             pageNumItems.push(
                 <li className={`page-item ${activeCss}`} key={pageNum}>
@@ -93,10 +94,13 @@ class PubmedArticleList extends React.Component {
     }
 
     render() {
+
         return(
             <div className={"search-list"}>
                 <ul className={"list-group"}>
-                    <PubmedArticleSearch/>
+                    <PureArticleSearch
+                        pageNum={this.state.currentPageNum}
+                    />
                     {this.renderArticleTitles()}
                     {this.renderPageNumbers()}
                 </ul>
@@ -106,7 +110,7 @@ class PubmedArticleList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return { articles: state.pubmedArticles }
+    return { pureArticles: state.pureArticles }
 }
 
-export default connect(mapStateToProps, { fetchPubmedArticlesAction, clearPubmedArticlesAction })(PubmedArticleList);
+export default connect(mapStateToProps, { fetchPureArticlesByQuery, clearPureArticles })(PureArticleList);

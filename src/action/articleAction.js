@@ -37,9 +37,12 @@ export const fetchArticlesByUserIdAction = (userId, pageNum, postMethod) => asyn
 }
 
 export const deleteArticleAction = (articleId) => async (dispatch) => {
+    const userId = getCookie("userId");
+
     try {
         const response = await Request().delete(`/api/article/${articleId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
+            params: { userId: userId }
         });
         dispatch({
             type: DELETE_ARTICLE,
@@ -62,26 +65,18 @@ export const deleteArticleAction = (articleId) => async (dispatch) => {
     }
 }
 
-export const fetchArticleByIdAction = (articleId) => async (dispatch) => {
-    const userId = getCookie("userId");
-
+export const fetchArticleByIdAction = (id) => async (dispatch) => {
     try {
-        const response = await Request().get(`/api/article/${articleId}`, {
-            headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
-            params: { userId: userId }
+        const response = await Request().get(`/api/article/${id}`, {
+            params: { userId: getCookie("userId") }
         });
         dispatch({
             type: FETCH_ARTICLE_BY_ID,
             payload: response.data
         });
     } catch (error) {
-        if (error.response.data.message === "Expired JWT Token") {
-            Promise.resolve(dispatch(refreshTokenAction()))
-                .then(() => dispatch(fetchArticleByIdAction(articleId)));
-        } else {
-            setError(error, "/")
-            history.push("/error");
-        }
+        dispatch(setError(error, "/"));
+        history.push("/error");
     }
 }
 

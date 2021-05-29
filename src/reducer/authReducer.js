@@ -21,6 +21,7 @@ export const authReducer = (state = initialState, action) => {
             eraseCookie("refreshToken");
             eraseCookie("userId");
             eraseCookie("role");
+            eraseCookie("query");
             return { ...initialState };
         case AUTHENTICATE:
             if (getCookie("accessToken")) {

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { fetchArticleByIdAction } from "../../action/articleAction";
 import {Table} from "react-bootstrap";
+import Spinner from "../common/Spinner";
 
 class ArticleShow extends React.Component {
 
@@ -99,7 +100,7 @@ class ArticleShow extends React.Component {
     render() {
         if (!this.props.article) {
             this.props.fetchArticleByIdAction(this.props.match.params.id);
-            return <div>Loading...</div>;
+            return <Spinner/>
         }
 
         return (
@@ -111,7 +112,6 @@ class ArticleShow extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(ownProps.match.params.id);
     return {
         article: state.articles[ownProps.match.params.id]
     }

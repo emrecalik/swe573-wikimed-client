@@ -1,10 +1,7 @@
 import React from "react";
-import {connect} from "react-redux";
-
-import ArticleList from "./article/pubmed/PubmedArticleList";
 import WikiItemList from "./wikiItem/WikiItemList";
-import { postArticlesWithWikiItemsAction } from "../action/pubmedArticleAction";
 import ArticleTagButton from "./article/ArticleTagButton";
+import PureArticleList from "./article/pureArticle/PureArticleList";
 
 class Home extends React.Component {
 
@@ -12,7 +9,7 @@ class Home extends React.Component {
         super(props);
         this.state = {
             wikiItems: null,
-            articles: null
+            pureArticles: null
         }
     }
 
@@ -20,19 +17,19 @@ class Home extends React.Component {
         this.setState({wikiItems: wikiItems})
     }
 
-    onArticleSelected = (articles) => {
-        this.setState({articles: articles})
+    onArticleSelected = (pureArticles) => {
+        this.setState({pureArticles: pureArticles})
     }
 
     render() {
         return (
             <React.Fragment>
-                <ArticleList onArticleSelected={this.onArticleSelected.bind(this)}/>
+                <PureArticleList onArticleSelected={this.onArticleSelected.bind(this)}/>
                 <hr/>
                 <WikiItemList onWikiItemSelected={this.onWikiItemSelected.bind(this)}/>
                 <hr/>
                 <ArticleTagButton
-                    articles={this.state.articles}
+                    pureArticles={this.state.pureArticles}
                     wikiItems={this.state.wikiItems}
                     target={"/"}
                 />
@@ -41,4 +38,4 @@ class Home extends React.Component {
     }
 }
 
-export default connect(null, { postArticlesWithWikiItems: postArticlesWithWikiItemsAction })(Home);
+export default Home;

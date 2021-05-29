@@ -2,8 +2,8 @@ import React from "react";
 import {connect} from "react-redux";
 import WikiItemSearch from "./WikiItemSearch";
 import _ from "lodash";
-import history from "../../history";
 import {Pagination} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 class WikiItemList extends React.Component {
     checkedItems = []
@@ -52,12 +52,12 @@ class WikiItemList extends React.Component {
                             checked={this.state.checkBoxState[wikiItemId]}
                             onChange={() => this.onCheckBoxChange(wikiItem)}
                         />
-                        <div onClick={() => history.push(`/wikiItem/show/${wikiItem.entityId}`)}>
+                        <Link to={`/wikiItem/show/${wikiItem.entityId}`}>
                             <h5>{wikiItem.label}</h5>
                             <div style={{fontStyle:"italic", fontSize:"12px"}}>
                                 {wikiItem.description}
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 </li>
             );
