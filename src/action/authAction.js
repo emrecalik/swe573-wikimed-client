@@ -3,11 +3,12 @@ import {Request} from "../api/request";
 import history from "../history";
 import {getCookie, setCookie} from "./cookie/cookieActions";
 import {setError} from "./errorAction";
+import {API_AUTH} from "./urls";
 
 export const signInAction = (body) => async (dispatch) => {
     const json = JSON.stringify(body);
     try {
-        const response = await Request().post("/api/auth/signin", json);
+        const response = await Request().post(API_AUTH + "/signin", json);
         dispatch({
             type: SIGN_IN,
             payload: response.data
@@ -23,7 +24,7 @@ export const signOutAction = () => async (dispatch) => {
     const refreshToken = getCookie("refreshToken")
     const json = JSON.stringify({refreshToken: refreshToken});
     try {
-        await Request().delete("/api/auth/signout", {
+        await Request().delete(API_AUTH + "/signout", {
             data: json
         });
         dispatch({
@@ -38,7 +39,7 @@ export const signOutAction = () => async (dispatch) => {
 export const signUpAction = (body) => async (dispatch) => {
     const json = JSON.stringify(body);
     try {
-        const response = await Request().post("/api/auth/signup", json);
+        const response = await Request().post(API_AUTH + "/signup", json);
         dispatch({
             type: SHOW_SUCCESS_MODAL,
             payload: response.data,
@@ -61,7 +62,7 @@ export const refreshTokenAction = () => async (dispatch) => {
     const refreshToken = getCookie("refreshToken")
     const json = JSON.stringify({refreshToken: refreshToken});
     try {
-        const response = await Request().post("/api/auth/token/refresh", json);
+        const response = await Request().post(API_AUTH + "/token/refresh", json);
         setCookie("accessToken", response.data.refreshedAccessToken);
     } catch(error) {
         dispatch(setError(error, "/"));

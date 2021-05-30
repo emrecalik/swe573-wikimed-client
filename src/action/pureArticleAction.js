@@ -8,11 +8,12 @@ import history from "../history";
 import {setError} from "./errorAction";
 import {refreshTokenAction} from "./authAction";
 import {getCookie} from "./cookie/cookieActions";
+import {API_ARTICLES, API_PURE_ARTICLES} from "./urls";
 
 export const fetchPureArticlesByQuery = (query, pageNum) => async (dispatch) => {
 
     try {
-        const response = await Request().get("/api/pureArticles", {
+        const response = await Request().get(API_PURE_ARTICLES, {
             params: {
                 query: query,
                 pageNum: pageNum
@@ -30,7 +31,7 @@ export const fetchPureArticlesByQuery = (query, pageNum) => async (dispatch) => 
 
 export const fetchPureArticleById = (id) => async (dispatch) => {
     try {
-        const response = await Request().get(`/api/pureArticles/${id}`);
+        const response = await Request().get(API_PURE_ARTICLES + `/${id}`);
         dispatch({
             type: FETCH_PURE_ARTICLE_BY_ID,
             payload: response.data
@@ -50,7 +51,7 @@ export const clearPureArticles = () => async (dispatch) => {
 export const tagPureArticlesWithWikiItems = (body, target) => async (dispatch) => {
     const json = JSON.stringify(body);
     try {
-        const response = await Request().post("/api/article", json, {
+        const response = await Request().post(API_ARTICLES, json, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`}
         });
         dispatch({

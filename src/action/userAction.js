@@ -4,11 +4,12 @@ import {setError} from "./errorAction";
 import {refreshTokenAction} from "./authAction";
 import history from "../history";
 import {getCookie} from "./cookie/cookieActions";
+import {API_ACTIVITIES, API_USERS} from "./urls";
 
 export const fetchUserDetailsByIdAction = (userId) => async (dispatch) => {
     const requesterId = getCookie("userId");
     try {
-        const response = await Request().get(`/api/user/${userId}`, {
+        const response = await Request().get(API_USERS + `/${userId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
             params: { requesterId: requesterId }
         });
@@ -31,7 +32,7 @@ export const followUserAction = (followeeId) => async (dispatch) => {
     const userId = getCookie("userId");
     try {
 
-        const response = await Request().post(`/api/user/${userId}/follow/${followeeId}`, {
+        const response = await Request().post(API_USERS + `/${userId}/follow/${followeeId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
         });
         dispatch({
@@ -54,7 +55,7 @@ export const unFollowUserAction = (followeeId) => async (dispatch) => {
     const userId = getCookie("userId");
     try {
 
-        const response = await Request().delete(`/api/user/${userId}/unFollow/${followeeId}`, {
+        const response = await Request().delete(API_USERS + `/${userId}/unFollow/${followeeId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
         });
         dispatch({
@@ -76,7 +77,7 @@ export const unFollowUserAction = (followeeId) => async (dispatch) => {
 export const fetchActivityStreamAction = () => async (dispatch) => {
     const userId = getCookie("userId");
     try {
-        const response = await Request().get(`/api/activity/${userId}`, {
+        const response = await Request().get(API_ACTIVITIES + `/${userId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`}
         });
         dispatch({

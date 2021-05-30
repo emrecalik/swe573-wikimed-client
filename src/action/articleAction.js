@@ -10,10 +10,13 @@ import {
 import history from "../history";
 import {setError} from "./errorAction";
 import {refreshTokenAction} from "./authAction";
+import {API_ARTICLES} from "./urls";
 
 export const fetchArticlesByUserIdAction = (userId, pageNum, postMethod) => async (dispatch) => {
+
+
     try {
-        const response = await Request().get(`/api/article/mylist`, {
+        const response = await Request().get(API_ARTICLES + "/mylist", {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
             params: {
                 userId: userId,
@@ -40,7 +43,7 @@ export const deleteArticleAction = (articleId) => async (dispatch) => {
     const userId = getCookie("userId");
 
     try {
-        const response = await Request().delete(`/api/article/${articleId}`, {
+        const response = await Request().delete(API_ARTICLES + `/${articleId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
             params: { userId: userId }
         });
@@ -67,7 +70,7 @@ export const deleteArticleAction = (articleId) => async (dispatch) => {
 
 export const fetchArticleByIdAction = (id) => async (dispatch) => {
     try {
-        const response = await Request().get(`/api/article/${id}`, {
+        const response = await Request().get(API_ARTICLES + `/${id}`, {
             params: { userId: getCookie("userId") }
         });
         dispatch({
@@ -82,7 +85,7 @@ export const fetchArticleByIdAction = (id) => async (dispatch) => {
 
 export const fetchPaginatedArticlesAction = (userId, pageNum, postMethod) => async (dispatch) => {
     try {
-        const response = await Request().get(`/api/article/all`, {
+        const response = await Request().get(API_ARTICLES + "/all", {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
             params: {
                 pageNum: pageNum,
@@ -107,7 +110,7 @@ export const fetchPaginatedArticlesAction = (userId, pageNum, postMethod) => asy
 
 export const rateArticleAction = (articleId, rateValue, target) => async (dispatch) => {
     try {
-        const response = await Request().post(`/api/article/${articleId}/rate`, null ,{
+        const response = await Request().post(API_ARTICLES + `/${articleId}/rate`, null ,{
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
             params: {
                 userId: getCookie("userId"),
@@ -132,7 +135,7 @@ export const rateArticleAction = (articleId, rateValue, target) => async (dispat
 
 export const deleteArticleTagAction = (articleId, wikiItemEntityId) => async (dispatch) => {
     try {
-        const response = await Request().delete(`/api/article/${articleId}/delete/${wikiItemEntityId}`,{
+        const response = await Request().delete(API_ARTICLES + `/${articleId}/delete/${wikiItemEntityId}`,{
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
         });
         dispatch({
