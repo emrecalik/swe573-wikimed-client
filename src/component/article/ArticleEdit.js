@@ -101,13 +101,12 @@ class ArticleEdit extends React.Component {
         if (!this.props.article) {
             return <div>Loading...</div>;
         }
-
         return (
             <React.Fragment>
                 {this.renderArticle()}
                 <WikiItemList onWikiItemSelected={this.onWikiItemSelected.bind(this)}/>
                 <ArticleTagButton
-                    articles={this.getArticleDto()}
+                    pureArticles={this.getArticleDto()}
                     wikiItems={this.state.wikiItems}
                     target={`/article/edit/${this.props.match.params.id}`}
                 />

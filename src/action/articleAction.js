@@ -13,8 +13,6 @@ import {refreshTokenAction} from "./authAction";
 import {API_ARTICLES} from "./urls";
 
 export const fetchArticlesByUserIdAction = (userId, pageNum, postMethod) => async (dispatch) => {
-
-
     try {
         const response = await Request().get(API_ARTICLES + "/mylist", {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
@@ -41,7 +39,6 @@ export const fetchArticlesByUserIdAction = (userId, pageNum, postMethod) => asyn
 
 export const deleteArticleAction = (articleId) => async (dispatch) => {
     const userId = getCookie("userId");
-
     try {
         const response = await Request().delete(API_ARTICLES + `/${articleId}`, {
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
@@ -155,5 +152,4 @@ export const deleteArticleTagAction = (articleId, wikiItemEntityId) => async (di
             setError(error)
         }
     }
-
 }
