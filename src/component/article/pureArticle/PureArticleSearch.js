@@ -17,7 +17,7 @@ class PureArticleSearch extends React.Component {
                         id={"query"}
                         name={"query"}
                         className={"form-control mr-sm-2 col-md-6"}
-                        placeholder={"Search on PubMed"}
+                        placeholder={"Search Article"}
                         aria-label={"Search"}
                     />
                     <button

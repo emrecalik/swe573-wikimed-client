@@ -56,7 +56,7 @@ class UserShow extends React.Component {
     }
 
     render() {
-        if (this.props.user.id.toString() !== this.props.match.params.id) {
+        if (this.props.user.id && this.props.user.id.toString() !== this.props.match.params.id) {
             return <Spinner/>
         }
 

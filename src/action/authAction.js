@@ -1,4 +1,4 @@
-import {AUTHENTICATE, SHOW_SUCCESS_MODAL, SIGN_IN, SIGN_OUT} from "./types";
+import {AUTHENTICATE, CLEAR_PURE_ARTICLES, CLEAR_WIKI_ITEMS, SHOW_SUCCESS_MODAL, SIGN_IN, SIGN_OUT} from "./types";
 import {Request} from "../api/request";
 import history from "../history";
 import {getCookie, setCookie} from "./cookie/cookieActions";
@@ -13,6 +13,8 @@ export const signInAction = (body) => async (dispatch) => {
             type: SIGN_IN,
             payload: response.data
         });
+        dispatch({ type: CLEAR_PURE_ARTICLES })
+        dispatch({ type: CLEAR_WIKI_ITEMS })
         history.push("/");
     } catch (error) {
         dispatch(setError(error, "/user/signin"));
@@ -27,9 +29,9 @@ export const signOutAction = () => async (dispatch) => {
         await Request().delete(API_AUTH + "/signout", {
             data: json
         });
-        dispatch({
-            type: SIGN_OUT
-        });
+        dispatch({ type: SIGN_OUT });
+        dispatch({ type: CLEAR_PURE_ARTICLES })
+        dispatch({ type: CLEAR_WIKI_ITEMS })
     } catch (error) {
         dispatch(setError(error, "/"));
         history.push("/error");

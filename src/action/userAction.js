@@ -32,7 +32,7 @@ export const followUserAction = (followeeId) => async (dispatch) => {
     const userId = getCookie("userId");
     try {
 
-        const response = await Request().post(API_USERS + `/${userId}/follow/${followeeId}`, {
+        const response = await Request().post(API_USERS + `/${userId}/follow/${followeeId}`, null,{
             headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
         });
         dispatch({

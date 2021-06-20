@@ -68,6 +68,7 @@ export const deleteArticleAction = (articleId) => async (dispatch) => {
 export const fetchArticleByIdAction = (id) => async (dispatch) => {
     try {
         const response = await Request().get(API_ARTICLES + `/${id}`, {
+            headers: { Authorization: `Bearer ${getCookie("accessToken")}`},
             params: { userId: getCookie("userId") }
         });
         dispatch({
